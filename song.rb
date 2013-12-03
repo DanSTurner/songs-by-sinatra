@@ -46,6 +46,11 @@ put '/songs/:id' do
   redirect '/songs'
 end
 
+delete '/songs/:id' do
+  @song = Song.get(params[:id]).destroy
+  redirect '/songs'
+end
+
 get '/songs/:id/edit' do
   @song = Song.get(params[:id])
   @title = "Edit #{@song.title}"
