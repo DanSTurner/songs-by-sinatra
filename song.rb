@@ -40,8 +40,14 @@ get '/songs/:id' do
   slim :show_song
 end
 
-get '/songs/new' do
-  @song = Song.new
-  @title = "Add a Song"
-  slim :new_song
+put '/songs/:id' do
+  @song = Song.get(params[:id])
+  @song.update(params[:song])
+  redirect '/songs'
+end
+
+get '/songs/:id/edit' do
+  @song = Song.get(params[:id])
+  @title = "Edit #{@song.title}"
+  slim :edit_song
 end
