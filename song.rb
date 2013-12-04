@@ -1,6 +1,8 @@
 require 'data_mapper'
 
-DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+configure :development do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+end
 
 class Song
   include DataMapper::Resource
@@ -29,6 +31,7 @@ post '/songs' do
 end
 
 get '/songs/new' do
+  halt(401,'Not Authorized') unless session[:admin]
   @song = Song.new
   @title = "Add a song"
   slim :new_song
@@ -41,17 +44,20 @@ get '/songs/:id' do
 end
 
 put '/songs/:id' do
+  halt(401,'Not Authorized') unless session[:admin]
   @song = Song.get(params[:id])
   @song.update(params[:song])
   redirect '/songs'
 end
 
 delete '/songs/:id' do
+  halt(401,'Not Authorized') unless session[:admin]
   @song = Song.get(params[:id]).destroy
   redirect '/songs'
 end
 
 get '/songs/:id/edit' do
+  halt(401,'Not Authorized') unless session[:admin]
   @song = Song.get(params[:id])
   @title = "Edit #{@song.title}"
   slim :edit_song
