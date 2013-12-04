@@ -2,7 +2,6 @@ require 'data_mapper'
 
 configure do
   enable :sessions
-  DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
 
 configure :production do
