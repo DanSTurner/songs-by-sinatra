@@ -6,6 +6,9 @@ end
 
 configure :production do
   DataMapper.setup(:default, ENV['DATABASE_URL'])
+  set :username,        'frank'
+  set :password,        'sinatra'
+  set :session_secret,  'kinda sucks'
 end
 
 configure :development do
