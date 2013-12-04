@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "songs", :type => :feature do
-  it "shows newly created songs" do
+  before(:each) do
     login!
     visit '/songs'
 
@@ -12,7 +12,20 @@ describe "songs", :type => :feature do
     fill_in 'song[lyrics]', :with => 'Jingle Bells, Jingle Bells'
 
     click_button 'Save Song'
+  end
 
+  it "shows newly created songs" do
     expect(page).to have_content 'Jingle Bells'
   end
+
+  it 'can be edited' do
+    click_link 'Edit this song'
+
+    fill_in 'song[title]', :with => 'test'
+    click_button 'Save Song'
+
+    expect(page).to have_content 'test'
+
+  end
 end
+

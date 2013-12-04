@@ -34,6 +34,9 @@ GEM
       dm-core (~> 1.2.0)
     dm-migrations (1.2.0)
       dm-core (~> 1.2.0)
+    dm-postgres-adapter (1.2.0)
+      dm-do-adapter (~> 1.2.0)
+      do_postgres (~> 0.10.6)
     dm-serializer (1.2.2)
       dm-core (~> 1.2.0)
       fastercsv (~> 1.5)
@@ -57,6 +60,8 @@ GEM
       uuidtools (~> 2.1)
     dm-validations (1.2.0)
       dm-core (~> 1.2.0)
+    do_postgres (0.10.13)
+      data_objects (= 0.10.13)
     do_sqlite3 (0.10.13)
       data_objects (= 0.10.13)
     fastercsv (1.5.5)
@@ -69,6 +74,7 @@ GEM
     multi_json (1.8.2)
     nokogiri (1.6.0)
       mini_portile (~> 0.5.0)
+    pg (0.17.0)
     rack (1.5.2)
     rack-protection (1.5.1)
       rack
@@ -110,8 +116,10 @@ PLATFORMS
 DEPENDENCIES
   capybara
   datamapper
+  dm-postgres-adapter
   dm-sqlite-adapter
   launchy
+  pg
   rspec
   sass
   sinatra
