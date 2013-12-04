@@ -26,6 +26,8 @@ configure :test do
   set :session_secret,  'kinda sucks'
 end
 
+DataMapper.finalize.auto_upgrade!
+
 get('/styles.css'){ scss :styles }
 
 get '/' do
