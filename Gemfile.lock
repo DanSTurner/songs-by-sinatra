@@ -120,6 +120,7 @@ DEPENDENCIES
   dm-sqlite-adapter
   launchy
   pg
+  rack
   rspec
   sass
   sinatra
