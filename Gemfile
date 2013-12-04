@@ -1,0 +1,11 @@
+source 'https://rubygems.org'
+
+gem 'datamapper'
+gem 'sinatra'
+gem 'rspec'
+gem 'capybara'
+gem 'sinatra-contrib'
+gem 'slim'
+gem 'sass'
+gem 'dm-sqlite-adapter'
+gem 'launchy'

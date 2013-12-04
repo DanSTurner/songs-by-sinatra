@@ -14,6 +14,12 @@ configure :development do
   set :session_secret,  'kinda sucks'
 end
 
+configure :test do
+  set :username,        'frank'
+  set :password,        'sinatra'
+  set :session_secret,  'kinda sucks'
+end
+
 get('/styles.css'){ scss :styles }
 
 get '/' do

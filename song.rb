@@ -4,6 +4,11 @@ configure :development do
   DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
 end
 
+configure :test do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/test.db")
+end
+
+
 class Song
   include DataMapper::Resource
   property :id,           Serial
@@ -17,7 +22,7 @@ class Song
   end
 end
 
-DataMapper.finalize
+DataMapper.finalize.auto_upgrade!
 
 get '/songs' do
   @songs = Song.all
