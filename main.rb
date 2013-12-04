@@ -4,30 +4,17 @@ require 'slim'
 require 'sass'
 require './song'
 
-configure do
-  enable :sessions
-  DataMapper.setup(:default, ENV['DATABASE_URL'])
-end
+helpers do
+  def css(*stylesheets)
+    stylesheets.map do |sheet|
+      "<link href=\"\/#{sheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
+    end.join
+  end
 
-configure :production do
-  DataMapper.setup(:default, ENV['DATABASE_URL'])
+  def current?(path = '/')
+    "current" if (request.path == path || request.path == path + "/")
+  end
 end
-
-configure :development do
-  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
-  set :username,        'frank'
-  set :password,        'sinatra'
-  set :session_secret,  'kinda sucks'
-end
-
-configure :test do
-  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/test.db")
-  set :username,        'frank'
-  set :password,        'sinatra'
-  set :session_secret,  'kinda sucks'
-end
-
-DataMapper.finalize.auto_migrate!
 
 get('/styles.css'){ scss :styles }
 
