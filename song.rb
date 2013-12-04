@@ -1,5 +1,30 @@
 require 'data_mapper'
 
+configure do
+  enable :sessions
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
+
+configure :production do
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
+
+configure :development do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+  set :username,        'frank'
+  set :password,        'sinatra'
+  set :session_secret,  'kinda sucks'
+end
+
+configure :test do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/test.db")
+  set :username,        'frank'
+  set :password,        'sinatra'
+  set :session_secret,  'kinda sucks'
+end
+
+DataMapper.finalize.auto_migrate!
+
 class Song
   include DataMapper::Resource
   property :id,           Serial
@@ -12,8 +37,6 @@ class Song
     super Date.strptime(date, '%m/%d/%Y')
   end
 end
-
-DataMapper.finalize.auto_upgrade!
 
 get '/songs' do
   @songs = Song.all
