@@ -8,13 +8,19 @@ configure do
   enable :sessions
 end
 
+configure :production do
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
+end
+
 configure :development do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
   set :username,        'frank'
   set :password,        'sinatra'
   set :session_secret,  'kinda sucks'
 end
 
 configure :test do
+  DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/test.db")
   set :username,        'frank'
   set :password,        'sinatra'
   set :session_secret,  'kinda sucks'
