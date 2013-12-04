@@ -6,6 +6,7 @@ require './song'
 
 configure do
   enable :sessions
+  DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
 
 configure :production do
