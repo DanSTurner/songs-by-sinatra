@@ -1,12 +1,5 @@
 require 'data_mapper'
 
-configure do
-  enable :sessions
-  set :username,        'frank'
-  set :password,        'sinatra'
-  set :session_secret,  'kinda sucks'
-end
-
 configure :production do
   DataMapper.setup(:default, ENV['DATABASE_URL'])
 end
@@ -64,7 +57,7 @@ post '/songs' do
 end
 
 get '/songs/new' do
-  halt(401,'Not Authorized') unless session[:admin]
+  protected!
   @song = Song.new
   @title = "Add a song"
   slim :new_song
@@ -77,7 +70,7 @@ get '/songs/:id' do
 end
 
 put '/songs/:id' do
-  halt(401,'Not Authorized') unless session[:admin]
+  protected!
   @song = find_song
   if @song.update(params[:song])
     flash[:notice] = "Song successfully updated"
@@ -86,7 +79,7 @@ put '/songs/:id' do
 end
 
 delete '/songs/:id' do
-  halt(401,'Not Authorized') unless session[:admin]
+  protected!
   if @song = find_song.destroy
     flash[:notice] = "Song successfully deleted"
   end
@@ -94,7 +87,7 @@ delete '/songs/:id' do
 end
 
 get '/songs/:id/edit' do
-  halt(401,'Not Authorized') unless session[:admin]
+  protected!
   @song = find_song
   @title = "Edit #{@song.title}"
   slim :edit_song

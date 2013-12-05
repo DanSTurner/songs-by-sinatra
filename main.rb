@@ -5,6 +5,7 @@ require 'slim'
 require 'sass'
 require 'pony'
 require './song'
+require './sinatra/auth'
 
 configure :development do
   set :email_options, {
@@ -60,17 +61,14 @@ end
 get('/styles.css'){ scss :styles }
 
 get '/' do
-  @title = "Home"
   slim :home
 end
 
 get '/about' do
-  @title = "About"
   slim :about
 end
 
 get '/contact' do
-  @title = "Contact"
   slim :contact
 end
 
@@ -80,27 +78,6 @@ post '/contact' do
   redirect '/contact'
 end
 
-get '/login' do
-  @title = "Login"
-  slim :login
-end
-
-post '/login' do
-  if params[:username] == settings.username && params[:password] == settings.password
-    session[:admin] = true
-    redirect '/songs'
-  else
-    @title = "Try again"
-    slim :login
-  end
-end
-
-get '/logout' do
-  session.clear
-  redirect '/'
-end
-
 not_found do
-  @title = "Page Not Found"
   slim :not_found
 end
