@@ -3,6 +3,7 @@ require 'sinatra/reloader' if development?
 require 'sinatra/flash'
 require 'slim'
 require 'sass'
+require 'pony'
 require './song'
 
 helpers do
@@ -14,6 +15,26 @@ helpers do
 
   def current?(path = '/')
     "current" if (request.path == path || request.path == path + "/")
+  end
+
+  def send_message
+    Pony.mail(
+      :from => "#{params[:name]} <#{params[:email]}>",
+      :to => "",
+      :subject => "Message from #{params[:name]}",
+      :body => params[:message],
+      # :port => '587',
+      :via => 'smtp',
+      :via_options => {
+        :address => 'smtp.gmail.com',
+        :port => '587',
+        :enable_starttls_auto => true,
+        :user_name => '',
+        :password => '',
+        :authentication => :plain,
+        :domain => 'localhost.localdomain',
+      }
+      )
   end
 end
 
@@ -32,6 +53,12 @@ end
 get '/contact' do
   @title = "Contact"
   slim :contact
+end
+
+post '/contact' do
+  send_message
+  flash[:notice] = "Message sent successfully"
+  redirect '/contact'
 end
 
 get '/login' do
