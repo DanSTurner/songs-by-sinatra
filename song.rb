@@ -19,7 +19,7 @@ configure :test do
   DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/test.db")
 end
 
-DataMapper.finalize.auto_migrate!
+DataMapper.finalize.auto_upgrade!
 
 class Song
   include DataMapper::Resource
@@ -59,7 +59,7 @@ get '/songs' do
 end
 
 post '/songs' do
-  create_song
+  flash[:notice] = "Song successfully added" if create_song
   redirect "/songs/#{@song.id}"
 end
 
@@ -79,13 +79,17 @@ end
 put '/songs/:id' do
   halt(401,'Not Authorized') unless session[:admin]
   @song = find_song
-  @song.update(params[:song])
+  if @song.update(params[:song])
+    flash[:notice] = "Song successfully updated"
+  end
   redirect '/songs'
 end
 
 delete '/songs/:id' do
   halt(401,'Not Authorized') unless session[:admin]
-  @song = find_song.destroy
+  if @song = find_song.destroy
+    flash[:notice] = "Song successfully deleted"
+  end
   redirect '/songs'
 end
 
