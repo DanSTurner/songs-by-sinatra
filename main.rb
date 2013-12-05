@@ -31,8 +31,7 @@ configure :production do
       :user_name            => ENV['SENDGRID_USERNAME'],
       :password             => ENV['SENDGRID_PASSWORD'],
       :authentication       => :plain,
-      :domain               => 'heroku.com'
-
+      :domain               => 'songs-by-sinatra-dansturner.heroku.com'
     }
   }
 end
