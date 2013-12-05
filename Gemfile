@@ -7,8 +7,10 @@ gem 'sinatra-contrib'
 gem 'slim'
 gem 'sass'
 gem 'rack'
-gem "pg", :group => :production
-gem "dm-postgres-adapter", :group => :production
-gem "dm-sqlite-adapter", :group => :development
+gem 'sinatra-flash'
+gem 'pony'
+gem 'pg', :group => :production
+gem 'dm-postgres-adapter', :group => :production
+gem 'dm-sqlite-adapter', :group => :development
 gem 'launchy', :group => :development
 gem 'capybara', :group => :development

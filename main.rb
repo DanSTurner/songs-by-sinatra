@@ -6,6 +6,36 @@ require 'sass'
 require 'pony'
 require './song'
 
+configure :development do
+  set :email_options, {
+    :via => :smtp,
+    :via_options => {
+      :address              => 'smtp.gmail.com',
+      :port                 => '587',
+      :enable_starttls_auto => true,
+      :user_name            => '',
+      :password             => '',
+      :authentication       => :plain,
+      :domain               => "localhost.localdomain"
+    }
+  }
+end
+
+configure :production do
+  set :email_options, {
+    :via => :smtp,
+    :via_options => {
+      :address              => 'smtp.sendgrid.net',
+      :port                 => '587',
+      :enable_starttls_auto => true,
+      :user_name            => ENV['SENDGRID_USERNAME'],
+      :password             => ENV['SENDGRID_PASSWORD'],
+      :authentication       => :plain,
+      :domain               => 'heroku.com'
+    }
+  }
+end
+
 helpers do
   def css(*stylesheets)
     stylesheets.map do |sheet|
@@ -20,20 +50,9 @@ helpers do
   def send_message
     Pony.mail(
       :from => "#{params[:name]} <#{params[:email]}>",
-      :to => "",
+      :to => "turner@nowwithmoredan.com",
       :subject => "Message from #{params[:name]}",
       :body => params[:message],
-      # :port => '587',
-      :via => 'smtp',
-      :via_options => {
-        :address => 'smtp.gmail.com',
-        :port => '587',
-        :enable_starttls_auto => true,
-        :user_name => '',
-        :password => '',
-        :authentication => :plain,
-        :domain => 'localhost.localdomain',
-      }
       )
   end
 end
