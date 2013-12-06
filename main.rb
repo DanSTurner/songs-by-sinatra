@@ -58,12 +58,21 @@ helpers do
       :body => params[:message],
       )
   end
+
+  def set_title
+    @title ||= ""
+  end
 end
 
 get('/styles.css'){ scss :styles }
 get('/javascripts/application.js'){ coffee :application }
 
+before do
+  set_title
+end
+
 get '/' do
+  @title = "Home"
   slim :home
 end
 
