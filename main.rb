@@ -4,6 +4,8 @@ require 'sinatra/flash'
 require 'slim'
 require 'sass'
 require 'pony'
+require 'coffee-script'
+require 'v8'
 require './song'
 require './sinatra/auth'
 
@@ -59,6 +61,7 @@ helpers do
 end
 
 get('/styles.css'){ scss :styles }
+get('/javascripts/application.js'){ coffee :application }
 
 get '/' do
   slim :home
