@@ -1,5 +1,5 @@
-require 'sinatra'
-require 'sinatra/reloader' if development?
+require 'sinatra/base'
+# require 'sinatra/reloader' if development?
 require 'sinatra/flash'
 require 'slim'
 require 'sass'
@@ -8,38 +8,48 @@ require 'coffee-script'
 require 'v8'
 require './song'
 require './sinatra/auth'
+require './applicationcontroller'
 
-configure :development do
-  set :email_options, {
-    :via => :smtp,
-    :via_options => {
-      :address              => 'smtp.gmail.com',
-      :port                 => '587',
-      :enable_starttls_auto => true,
-      :user_name            => '',
-      :password             => '',
-      :authentication       => :plain,
-      :domain               => "localhost.localdomain"
+class Website < ApplicationController
+
+  configure do
+    enable :sessions
+  end
+
+  configure :development do
+    set :email_options, {
+      :via => :smtp,
+      :via_options => {
+        :address              => 'smtp.gmail.com',
+        :port                 => '587',
+        :enable_starttls_auto => true,
+        :user_name            => '',
+        :password             => '',
+        :authentication       => :plain,
+        :domain               => "localhost.localdomain"
+      }
     }
-  }
-end
+  end
 
-configure :production do
-  set :email_options, {
-    :via => :smtp,
-    :via_options => {
-      :address              => 'smtp.sendgrid.net',
-      :port                 => '587',
-      :enable_starttls_auto => true,
-      :user_name            => ENV['SENDGRID_USERNAME'],
-      :password             => ENV['SENDGRID_PASSWORD'],
-      :authentication       => :plain,
-      :domain               => 'songs-by-sinatra-dansturner.heroku.com'
+  configure :production do
+    set :email_options, {
+      :via => :smtp,
+      :via_options => {
+        :address              => 'smtp.sendgrid.net',
+        :port                 => '587',
+        :enable_starttls_auto => true,
+        :user_name            => ENV['SENDGRID_USERNAME'],
+        :password             => ENV['SENDGRID_PASSWORD'],
+        :authentication       => :plain,
+        :domain               => 'songs-by-sinatra-dansturner.heroku.com'
+      }
     }
-  }
-end
+  end
 
-helpers do
+  before do
+    set_title
+  end
+
   def css(*stylesheets)
     stylesheets.map do |sheet|
       "<link href=\"\/#{sheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
@@ -62,34 +72,30 @@ helpers do
   def set_title
     @title ||= ""
   end
-end
 
-get('/styles.css'){ scss :styles }
-get('/javascripts/application.js'){ coffee :application }
+  get('/styles.css'){ scss :styles }
+  get('/javascripts/application.js'){ coffee :application }
 
-before do
-  set_title
-end
+  get '/' do
+    @title = "Home"
+    slim :home
+  end
 
-get '/' do
-  @title = "Home"
-  slim :home
-end
+  get '/about' do
+    slim :about
+  end
 
-get '/about' do
-  slim :about
-end
+  get '/contact' do
+    slim :contact
+  end
 
-get '/contact' do
-  slim :contact
-end
+  post '/contact' do
+    send_message
+    flash[:notice] = "Message sent successfully"
+    redirect '/contact'
+  end
 
-post '/contact' do
-  send_message
-  flash[:notice] = "Message sent successfully"
-  redirect '/contact'
-end
-
-not_found do
-  slim :not_found
+  not_found do
+    slim :not_found
+  end
 end
