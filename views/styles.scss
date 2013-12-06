@@ -68,3 +68,20 @@ nav a.current {
   color: $red;
   border: 1px solid $red;
 }
+
+pre {
+  padding-left: 15px;
+}
+
+#like {
+  p {
+    color: $red;
+  }
+
+  input {
+    background: no-repeat url(/images/like.png);
+    text-indent: -200px;
+    height: 43px;
+    width: 93px;
+  }
+}
