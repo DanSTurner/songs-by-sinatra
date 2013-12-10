@@ -72,7 +72,7 @@ class SongController < ApplicationController
 
   def js(*scripts)
     scripts.map do |script|
-      "<script src=\"/#{script}.js\"></script>"
+      "<script src=\"/javascripts/#{script}.js\"></script>"
     end.join
   end
 
