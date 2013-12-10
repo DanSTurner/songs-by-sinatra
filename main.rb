@@ -9,8 +9,10 @@ require 'v8'
 require './song'
 require './sinatra/auth'
 require './applicationcontroller'
+require './asset-handler'
 
 class Website < ApplicationController
+  use AssetHandler
 
   configure do
     enable :sessions
@@ -52,7 +54,13 @@ class Website < ApplicationController
 
   def css(*stylesheets)
     stylesheets.map do |sheet|
-      "<link href=\"\/#{sheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
+      "<link href=\"/#{sheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
+    end.join
+  end
+
+  def js(*scripts)
+    scripts.map do |script|
+      "<script src=\"/javascripts/#{script}.js\"></script>"
     end.join
   end
 
@@ -72,9 +80,6 @@ class Website < ApplicationController
   def set_title
     @title ||= ""
   end
-
-  get('/styles.css'){ scss :styles }
-  get('/javascripts/application.js'){ coffee :application }
 
   get '/' do
     @title = "Home"

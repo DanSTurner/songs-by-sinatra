@@ -70,6 +70,12 @@ class SongController < ApplicationController
     end.join
   end
 
+  def js(*scripts)
+    scripts.map do |script|
+      "<script src=\"/#{script}.js\"></script>"
+    end.join
+  end
+
   def current?(path = '/')
     "current" if (request.path == path || request.path == path + "/")
   end

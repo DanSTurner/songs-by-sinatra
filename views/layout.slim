@@ -1,10 +1,10 @@
 doctype html
 html lang="en"
   head
-    - unless @title == ""
-      title== @title + " | Songs by Sinatra"
-    - else
+    - if @title == ""
       title== "Songs by Sinatra"
+    - else
+      title== @title + " | Songs by Sinatra"
     meta charset="utf-8"
     == css :styles
     link href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" media="screen, projection" rel="stylesheet"
