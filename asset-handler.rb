@@ -11,10 +11,14 @@ class AssetHandler < Sinatra::Base
 
   get '/javascripts/*.js' do
     pass unless settings.coffeescript?
+    last_modified File.mtime(settings.root+'/assets/'+settings.jsdir)
+    cache_control :public, :must_validate
     coffee (settings.jsdir + '/' + params[:splat].first).to_sym
   end
 
   get '/*.css' do
+    last_modified File.mtime(settings.root+'/assets/'+settings.jsdir)
+    cache_control :public, :must_validate
     send(settings.cssengine, (settings.cssdir + '/' + params[:splat].first).to_sym)
   end
 end
