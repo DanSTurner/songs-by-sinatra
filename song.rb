@@ -93,9 +93,6 @@ class SongController < ApplicationController
     @title ||= ""
   end
 
-  get('/styles.css'){ scss :styles }
-  get('/javascripts/application.js'){ coffee :application }
-
   get '/' do
     find_songs
     @title = "Songs"
