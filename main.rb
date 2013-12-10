@@ -11,6 +11,37 @@ require './sinatra/auth'
 require './applicationcontroller'
 require './asset-handler'
 
+module WebsiteHelper
+  def css(*stylesheets)
+    stylesheets.map do |sheet|
+      "<link href=\"/#{sheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
+    end.join
+  end
+
+  def js(*scripts)
+    scripts.map do |script|
+      "<script src=\"/javascripts/#{script}.js\"></script>"
+    end.join
+  end
+
+  def current?(path = '/')
+    "current" if (request.path == path || request.path == path + "/")
+  end
+
+  def send_message
+    Pony.mail(
+      :from => "#{params[:name]} <#{params[:email]}>",
+      :to => "turner@nowwithmoredan.com",
+      :subject => "Message from #{params[:name]}",
+      :body => params[:message],
+      )
+  end
+
+  def set_title
+    @title ||= ""
+  end
+end
+
 class Website < ApplicationController
   use AssetHandler
 
@@ -48,37 +79,10 @@ class Website < ApplicationController
     }
   end
 
+  helpers WebsiteHelper
+
   before do
     set_title
-  end
-
-  def css(*stylesheets)
-    stylesheets.map do |sheet|
-      "<link href=\"/#{sheet}.css\" media=\"screen, projection\" rel=\"stylesheet\" />"
-    end.join
-  end
-
-  def js(*scripts)
-    scripts.map do |script|
-      "<script src=\"/javascripts/#{script}.js\"></script>"
-    end.join
-  end
-
-  def current?(path = '/')
-    "current" if (request.path == path || request.path == path + "/")
-  end
-
-  def send_message
-    Pony.mail(
-      :from => "#{params[:name]} <#{params[:email]}>",
-      :to => "turner@nowwithmoredan.com",
-      :subject => "Message from #{params[:name]}",
-      :body => params[:message],
-      )
-  end
-
-  def set_title
-    @title ||= ""
   end
 
   get '/' do
