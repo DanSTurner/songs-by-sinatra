@@ -18,3 +18,6 @@ gem 'dm-sqlite-adapter', :group => :development
 gem 'launchy', :group => :development
 gem 'capybara', :group => :development
 gem 'pry'
+gem 'pry-debugger'
+gem 'better_errors'
+gem 'binding_of_caller'

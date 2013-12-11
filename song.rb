@@ -5,6 +5,7 @@ require 'sass'
 require 'sinatra/flash'
 require './sinatra/auth'
 require './applicationcontroller'
+require "better_errors"
 
 DataMapper.finalize.auto_upgrade!
 
@@ -34,9 +35,6 @@ module SongHelpers
 
   # another unnecessary abstraction
   def create_song
-    puts '*'*80
-    p params
-    puts '*'*80
     @song = Song.create(params[:song])
   end
 end
@@ -55,6 +53,8 @@ class SongController < ApplicationController
 
   configure :development do
     DataMapper.setup(:default, "sqlite3://#{Dir.pwd}/development.db")
+    use BetterErrors::Middleware
+    BetterErrors.application_root = __dir__
   end
 
   configure :test do
