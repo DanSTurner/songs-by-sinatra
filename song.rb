@@ -34,6 +34,9 @@ module SongHelpers
 
   # another unnecessary abstraction
   def create_song
+    puts '*'*80
+    p params
+    puts '*'*80
     @song = Song.create(params[:song])
   end
 end
@@ -149,3 +152,5 @@ class SongController < ApplicationController
     slim :like, :layout => false
   end
 end
+
+DataMapper.finalize

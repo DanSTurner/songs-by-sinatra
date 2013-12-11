@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 ruby '2.0.0'
+gem 'dm-core'
 gem 'datamapper'
 gem 'sinatra'
 gem 'rspec'
@@ -16,3 +17,4 @@ gem 'dm-postgres-adapter', :group => :production
 gem 'dm-sqlite-adapter', :group => :development
 gem 'launchy', :group => :development
 gem 'capybara', :group => :development
+gem 'pry'
